@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import scipy.stats as sc
+import openpyxl
 
 st.set_page_config(
     page_title="Aplikasi Streamlit",
