@@ -216,8 +216,8 @@ else:
         st.components.v1.html(html11,height=100)
         st.subheader("Upload file anda dengan extensi xlxs")
         upload = st.file_uploader("upload file anda")
+        data = pd.read_excel(upload)
         if upload:
-            data = pd.read_excel(upload)
             st.table(data)
             st.subheader("Data Deskripsi")
             st.write(data.describe())
