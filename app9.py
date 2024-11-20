@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 import scipy.stats as sc
-import openpyxl
 
 st.set_page_config(
     page_title="Aplikasi Streamlit",
@@ -224,18 +224,18 @@ else:
             st.write(data.describe())
             st.subheader("Test Normalitas")
             st.markdown("Menggunakan Shapiro-wilks")
-            st.table(sc.shapiro(data['Nilai']))
+            st.table(sc.shapiro(data[data.keys()[1]]))
             st.markdown("Menggunakan Kolmogorov-smirnov")
-            st.table(sc.kstest(data['Nilai'], 'norm', args=(np.mean(data['Nilai']), np.std(data['Nilai'], ddof=1))))
+            st.table(sc.kstest(data[data.keys()[1]], 'norm', args=(np.mean(data[data.keys()[1]]), np.std(data[data.keys()[1]], ddof=1))))
             st.subheader("Uji Rata-rata 1 sampel")
             pilih = st.radio('Pilih Uji Rata-rata',['Uji t 1 sampel','Uji Wilcoxon Signed-Rank Test'])
             nilai = st.text_input("Masukan nilai pembanding")
             if nilai:
                 if pilih =="Uji t 1 sampel":
-                    uji=sc.ttest_1samp(data['Nilai'],float(nilai))
+                    uji=sc.ttest_1samp(data[data.keys()[1]],float(nilai))
                     st.table(uji)
                 else:
-                    uji=sc.wilcoxon(data['Nilai']-float(nilai))
+                    uji=sc.wilcoxon(data[data.keys()[1]]-float(nilai))
                     st.table(uji)
     elif halaman=="Gradio":
         st.header("Rumus python di Gradio")
@@ -505,9 +505,127 @@ else:
     print("H0 diterima: Data tidak memiliki perbedaan signifikan dengan", nilai_tes)
 
                 ''')
-with tab2:
-    st.header("Uji 2 Sampel Dependen")
+    with tab2:
+        st.header("Uji 2 Sampel Dependen")
+        st.markdown('''<h5>Uji dua sampel dependen (juga disebut sebagai paired sample test) digunakan untuk
+membandingkan rata-rata dua kelompok data yang berpasangan (misalnya, pengukuran sebelum dan sesudah dari
+individu yang sama). Berikut adalah langkah-langkah untuk melakukan uji ini:</h5>''',unsafe_allow_html=True)
+        st.markdown('''<h4>Langkah 1: Formulasi Hipotesis</h4>''',unsafe_allow_html=True)
+        st.markdown('''<h5><ul>
+        <li>Hipotesis Nol (H₀): Tidak ada perbedaan rata-rata antara dua kelompok (selisih rata-rata = 0).</li>
+        <li>Hipotesis Alternatif (H₁): Ada perbedaan rata-rata antara dua kelompok (selisih rata-rata ≠ 0).</li>
+        </ul></h5>''',unsafe_allow_html=True)
+        st.markdown('''<h4>Langkah 2: Tentukan Metode Uji</h4>''',unsafe_allow_html=True)
+        st.markdown('''<h5>Metode yang sering digunakan untuk uji dua sampel dependen:<ul>
+        <li>Uji t berpasangan (Paired t-test) Digunakan jika data berdistribusi normal.</li>
+        <li>Uji Wilcoxon Signed-Rank Digunakan jika data tidak berdistribusi normal (non-parametrik)</li>
+        </ul></h5>''',unsafe_allow_html=True)
+        st.markdown('''<h4>Langkah 3: Persiapkan Data</h4>''',unsafe_allow_html=True)
+        st.markdown('''<h5>Data harus terdiri dari dua kolom:<ul>
+        <li>Kolom 1: Data kelompok pertama (misalnya, sebelum perlakuan).</li>
+        <li>Kolom 2: Data kelompok kedua (misalnya, setelah perlakuan).</li>
+        </ul></h5>''',unsafe_allow_html=True)
+        st.markdown('''<h4>Langkah 4: Analisis Data</h4>''',unsafe_allow_html=True)
+        st.markdown('''<h5>A. Uji Normalitas</h5>''',unsafe_allow_html=True)
+        st.markdown('''<h6>Periksa apakah data selisih berdistribusi normal. Ini menentukan apakah Anda
+menggunakan uji parametrik atau non-parametrik.
+<ul>
+<li>Hitung selisih: selisih=setelah−sebelum.</li>
+<li>Lakukan uji normalitas pada data selisih menggunakan Shapiro-Wilk atau Kolmogorov-Smirnov.</li>
+</ul></h6>''',unsafe_allow_html=True)
+        st.markdown('''<h5>Python (Shapiro-Wilk):</h5>''',unsafe_allow_html=True)
+        st.code('''
+from scipy.stats import shapiro
+# Misalnya selisih adalah array numpy
+selisih = setelah - sebelum
+stat, p = shapiro(selisih)
+print("Statistik Shapiro-Wilk:", stat)
+print("p-value:", p)
 
+if p < 0.05:
+    print("Data tidak terdistribusi normal (gunakan Wilcoxon)")
+else:
+    print("Data terdistribusi normal (gunakan Paired t-test)")
+
+''')
+        st.markdown('''<h5>B. Uji Paired t-test (Jika Data Normal)</h5>''',unsafe_allow_html=True)
+        st.markdown('''<h6>Gunakan paired t-test untuk membandingkan dua kelompok:</h6>''',unsafe_allow_html=True)
+        st.markdown('''<h5>Python (Paired t-test):</h5>''',unsafe_allow_html=True)
+        st.code('''
+from scipy.stats import ttest_rel
+
+# Data
+sebelum = [85, 78, 88, 95]
+setelah = [90, 80, 85, 92]
+
+# Paired t-test
+stat, p = ttest_rel(sebelum, setelah)
+print("Statistik t:", stat)
+print("p-value:", p)
+
+if p < 0.05:
+    print("H0 ditolak: Ada perbedaan signifikan")
+else:
+    print("H0 diterima: Tidak ada perbedaan signifikan")
+
+''')
+        st.markdown('''<h5>C. Uji Wilcoxon (Jika Data Tidak Normal)</h5>''',unsafe_allow_html=True)
+        st.markdown('''<h6>Gunakan Wilcoxon Signed-Rank Test jika data tidak normal.</h6>''',unsafe_allow_html=True)
+        st.markdown('''<h5>Python (Wilcoxon Test):</h5>''',unsafe_allow_html=True)
+        st.code('''
+from scipy.stats import wilcoxon
+
+# Wilcoxon Signed-Rank Test
+stat, p = wilcoxon(sebelum, setelah)
+print("Statistik Wilcoxon:", stat)
+print("p-value:", p)
+
+if p < 0.05:
+    print("H0 ditolak: Ada perbedaan signifikan")
+else:
+    print("H0 diterima: Tidak ada perbedaan signifikan")
+
+''')
+        st.markdown('''<h4>Langkah 5: Interpretasi Hasil</h4>''',unsafe_allow_html=True)
+        st.markdown('''<ol>
+<li>p-value < 0.05: Tolak H₀, ada perbedaan signifikan antara dua kelompok.</li>
+<li>p-value ≥ 0.05: Terima H₀, tidak ada perbedaan signifikan antara dua kelompok.</li>
+</ol>''',unsafe_allow_html=True)
+        st.markdown('''<h4>Langkah 6: Visualisasi (Opsional)</h4>''',unsafe_allow_html=True)
+        st.markdown('''<h5>Untuk melihat perbedaan secara visual, Anda bisa membuat boxplot atau barplot.</h5>''',unsafe_allow_html=True)
+        st.code('''
+import matplotlib.pyplot as plt
+
+plt.boxplot([sebelum, setelah], labels=["Sebelum", "Setelah"])
+plt.title("Perbandingan Sebelum dan Setelah")
+plt.ylabel("Nilai")
+plt.show()
+''')
+        data = st.file_uploader("Masukan data excel 2 sampel dependen")
+        if data:
+            data1 = pd.read_excel(data)
+            st.table(data1)
+            st.subheader("Deskripsi Data")
+            st.table(data1.describe())
+            st.subheader("Uji Normalitas")
+            bagian = st.columns(2)
+            bagian[0].table(sc.shapiro(data1[data1.keys()[1]]))
+            bagian[1].table(sc.shapiro(data1[data1.keys()[2]]))
+            st.subheader("Uji Rata-rata")
+            pilih = st.radio("pilih",["Uji t 2 sampel dependen","Uji Wilcoxon"])
+            if pilih=="Uji t 2 sampel dependen":
+                uji = sc.ttest_rel(data1[data1.keys()[1]],data1[data1.keys()[2]])
+                st.table(uji)
+            elif pilih=="Uji Wilcoxon":
+                uji = sc.wilcoxon(data1[data1.keys()[1]],data1[data1.keys()[2]])
+                st.table(uji)
+            st.subheader("Gambar Plot")
+            plt.boxplot([data1[data1.keys()[1]],data1[data1.keys()[2]]],labels=[data1.keys()[1],data1.keys()[2]])
+            plt.title("Perbandingan sebelum dan sesudah")
+            plt.ylabel("Nilai")
+            st.pyplot(plt)
+            
+                
 tuliskan_ke_html='''
 <!DOCTYPE html>
 <html lang="en">
