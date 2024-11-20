@@ -505,6 +505,8 @@ else:
     print("H0 diterima: Data tidak memiliki perbedaan signifikan dengan", nilai_tes)
 
                 ''')
+with tab2:
+    st.header("Uji 2 Sampel Dependen")
         
     
                  
