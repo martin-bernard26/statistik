@@ -507,6 +507,84 @@ else:
                 ''')
 with tab2:
     st.header("Uji 2 Sampel Dependen")
+
+tuliskan_ke_html='''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload File ke Firebase Storage</title>
+</head>
+<body>
+  <h1>Masukan Tugas Anda di sini ya...</h1>
+  <input type="file" id="fileInput">
+  <button id="uploadFile">Upload</button>
+  <p id="uploadStatus"></p>
+
+  <script type="module">
+    // Import Firebase SDK
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
+
+    // Konfigurasi Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyCIWubByRLqe8hBSstJmHZZBHIkjGHHG3g",
+        authDomain: "latihan-eef99.firebaseapp.com",
+        databaseURL: "https://latihan-eef99-default-rtdb.firebaseio.com",
+        projectId: "latihan-eef99",
+        storageBucket: "latihan-eef99.appspot.com",
+        messagingSenderId: "543970413152",
+        appId: "1:543970413152:web:1d34e4e7797e0567905105"
+    };
+
+    // Inisialisasi Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+
+    // Elemen HTML
+    const fileInput = document.getElementById('fileInput');
+    const uploadButton = document.getElementById('uploadFile');
+    const uploadStatus = document.getElementById('uploadStatus');
+
+    // Fungsi untuk upload file
+    uploadButton.addEventListener('click', () => {
+      const file = fileInput.files[0]; // Ambil file dari input
+      if (!file) {
+        alert('Pilih file terlebih dahulu!');
+        return;
+      }
+
+      const storageRef = ref(storage, `uploads/${file.name}`); // Lokasi penyimpanan di Firebase Storage
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      // Observasi status unggahan
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          // Progress upload
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          uploadStatus.textContent = `Upload sedang berlangsung: ${progress.toFixed(2)}%`;
+        },
+        (error) => {
+          // Tangani error
+          console.error('Error saat mengunggah:', error);
+          uploadStatus.textContent = `Gagal mengunggah: ${error.message}`;
+        },
+        () => {
+          // Berhasil upload
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            console.log('File berhasil diunggah dan tersedia di URL:', url);
+            uploadStatus.innerHTML = `Berhasil diunggah! <a href="${url}" target="_blank">Unduh file</a>`;
+          });
+        }
+      );
+    });
+  </script>
+</body>
+</html>
+'''
+st.components.v1.html(tuliskan_ke_html)
         
     
                  
