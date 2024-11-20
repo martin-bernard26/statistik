@@ -215,6 +215,41 @@ else:
             </body>
             '''
         st.components.v1.html(html11,height=100)
+        tulisan_penting='''
+        <html>
+        <head>
+            <style>
+                #konsep{
+                    font-family:broadway;
+                    font-size:20px;
+                    color:red;
+                    background-color:cyan;
+                    transform:translate(0px);
+                    animation-name:jalankan;
+                    animation-duration:3s;
+                    animation-iteration-count:infinite;
+                    animation-direction: alternate;
+                }
+                @keyframes jalankan{
+                    0%{color:red;transform:translate(0px)}
+                    100%{color:black;transform:translate(100px)}
+                }
+            </style>
+        </head>
+        <body>
+        <div id="konsep">Petunjuk sebelum mengupload data</div>
+        <div style="text-align:center;margin:5px;background-color:orange;padding:5px;"><iframe src="https://res.cloudinary.com/ikip-siliwangi/image/upload/v1732108396/xiyvjxxfybupumrhjx3o.png" width="300" height="300"></iframe></div>
+        <div style="font-family:'comic sans ms';font-size:20px;border:2px solid black;border-radius:10px;box-shadow:2px 2px 2px 2px blue">
+            <ol>
+                <li>perhatikan gambar di atas  ada 2 kolom, kolom A untuk nama siswa, dan kolom B untuk Nilai</li>
+                <li>Nama kolom dibebaskan menurut pengguna</li>
+                <li>Kolom hanya diisi pada kolom A dan B saja.</li>
+            </ol>
+        </div>
+        </body>
+        </html>
+        '''
+        st.components.v1.html(tulisan_penting,height=550)
         st.subheader("Upload file anda dengan extensi xlxs")
         upload = st.file_uploader("upload file anda")
         if upload:
