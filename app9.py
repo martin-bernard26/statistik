@@ -802,7 +802,7 @@ tuliskan_ke_html1='''
             kirim.addEventListener("click",()=>{
                 var nama = document.getElementById("nama").value 
                 var pendapat = document.getElementById("pendapat").value 
-                const uniqueKey = Date.now();
+                var uniqueKey = Date.now();
                 if(nama && pendapat){
                 set(ref(db,"diskusi/"+uniqueKey),{
                     nama:nama,
@@ -841,7 +841,7 @@ tuliskan_ke_html1='''
                 const pendapatBaru = prompt("Masukan Pendapat Baru:");
                 const uniqueKey = Date.now().toISOString();
                 if (namaBaru && pendapatBaru) {
-                    update(ref(db, 'diskusi/' + key), { nama: namaBaru, pendapat: pendapatBaru })
+                    update(ref(db, 'diskusi/' + key), { nama: namaBaru, pendapat: pendapatBaru, tanggal:uniqueKey })
                 .then(() => {
                 alert('Data updated successfully');
                 })
@@ -863,8 +863,6 @@ tuliskan_ke_html1='''
       }
     };
   </script>
-
-        </script>
 </body>
 </html>
 '''    
