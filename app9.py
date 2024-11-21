@@ -738,6 +738,133 @@ tuliskan_ke_html='''
 </html>
 '''
 st.components.v1.html(tuliskan_ke_html)
+tuliskan_ke_html1='''
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #judul{
+            font-family:"bauhaus 93";
+            font-size:40px;
+            color:green;
+            text-shadow:2px 2px 2px red;
+        }
+        .samakan{
+            font-family:'comic sans ms';
+            font-size:15px;
+            font-weight:bold;
+        }
+        .gambar{
+            border:2px solid black;
+            justify-content: center;
+            align-items: center;
+        }
+        #kirim{
+            font-family:Elephant;
+            font-size:15px;
+            width:100px;
+            margin-bottom:5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="judul">Ruang Diskusi</div>
+    <div class="samakan">Nama: <input id="nama" type="text"></div>
+    <div class="samakan">Diskusi atau masukan:</div>
+    <div><textarea id="pendapat" cols="50" rows="10"></textarea></div>
+    <div ><button id="kirim" >Kirim</button></div>
+    <div><table id="dataTable"></table></div>
+        <script type="module">
+            // Import Firebase modules
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+            import { getDatabase, ref, set, get, update, remove, onValue } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
         
+            // Firebase configuration
+            const firebaseConfig = {
+                apiKey: "AIzaSyCkgVmk75UTkos2y1Mrc7d3-sxShMfbeJQ",
+                authDomain: "natural-ethos-423713-e0.firebaseapp.com",
+                databaseURL: "https://natural-ethos-423713-e0-default-rtdb.firebaseio.com",
+                projectId: "natural-ethos-423713-e0",
+                storageBucket: "natural-ethos-423713-e0.firebasestorage.app",
+                messagingSenderId: "41833960811",
+                appId: "1:41833960811:web:6218d6ac2f3538c704e82e",
+            };
+        
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app);
+
+            var kirim = document.getElementById("kirim")
+            var dataTable = document.getElementById("dataTable")
+            kirim.addEventListener("click",()=>{
+                var nama = document.getElementById("nama").value 
+                var pendapat = document.getElementById("pendapat").value 
+                if(nama && pendapat){
+                set(ref(db,"diskusi/"+nama),{
+                    nama:nama,
+                    pendapat:pendapat
+                })
+                .then(() => {
+                    alert('Data added successfully');
+                })
+                .catch((error) => {
+                    console.error("Error adding data:", error);
+                });
+                }else{
+                    alert("Nama atau Pendapat masih kosong")
+                }
+            })
+            onValue(ref(db, 'diskusi'), (snapshot) => {
+                    dataTable.innerHTML = '';
+                    const data = snapshot.val();
+                    for (let key in data) {
+                        const row = `
+                        <tr style="margin:5px;background-color:orange;padding:5px;">
+                        <td style="border:1px solid black;background-color:cyan">${data[key].nama}</td>
+                        <td style="border:1px solid black;background-color:yellow">${data[key].pendapat}</td>
+                        <td>
+                        <button onclick="updateData('${key}')">Update</button>
+                        <button onclick="deleteData('${key}')">Delete</button>
+                        </td>
+                        </tr>`;
+                        dataTable.innerHTML += row;
+                    }
+                });
+                window.updateData = (key) => {
+                const namaBaru = prompt("Masukan nama baru:");
+                const pendapatBaru = prompt("Masukan Pendapat Baru:");
+
+                if (namaBaru && pendapatBaru) {
+                    update(ref(db, 'diskusi/' + key), { nama: namaBaru, pendapat: pendapatBaru })
+                .then(() => {
+                alert('Data updated successfully');
+                })
+                .catch((error) => {
+                console.error("Error updating data:", error);
+                 });
+            }
+            };
+            // Delete data from Firebase
+    window.deleteData = (key) => {
+      if (confirm("Are you sure you want to delete this data?")) {
+        remove(ref(db, 'diskusi/' + key))
+          .then(() => {
+            alert('Data deleted successfully');
+          })
+          .catch((error) => {
+            console.error("Error deleting data:", error);
+          });
+      }
+    };
+  </script>
+
+        </script>
+</body>
+</html>
+'''    
+st.components.v1.html(tuliskan_ke_html1,height=1000,width=600)                  
     
                  
