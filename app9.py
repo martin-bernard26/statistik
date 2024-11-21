@@ -807,6 +807,7 @@ tuliskan_ke_html1='''
                 set(ref(db,"diskusi/"+uniqueKey),{
                     nama:nama,
                     pendapat:pendapat
+                    tanggal:uniqueKey.toISOString()
                 })
                 .then(() => {
                     alert('Data added successfully');
@@ -825,6 +826,7 @@ tuliskan_ke_html1='''
                         const row = `
                         <tr style="margin:5px;background-color:orange;padding:5px;">
                         <td style="border:1px solid black;background-color:cyan">${data[key].nama}</td>
+                        <td style="border:1px solid black;background-color:cyan">${data[key].tanggal}</td>
                         <td style="border:1px solid black;background-color:yellow">${data[key].pendapat}</td>
                         <td>
                         <button onclick="updateData('${key}')">Update</button>
@@ -837,7 +839,7 @@ tuliskan_ke_html1='''
                 window.updateData = (key) => {
                 const namaBaru = prompt("Masukan nama baru:");
                 const pendapatBaru = prompt("Masukan Pendapat Baru:");
-
+                const uniqueKey = Date.now().toISOString();
                 if (namaBaru && pendapatBaru) {
                     update(ref(db, 'diskusi/' + key), { nama: namaBaru, pendapat: pendapatBaru })
                 .then(() => {
