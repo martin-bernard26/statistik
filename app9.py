@@ -802,8 +802,9 @@ tuliskan_ke_html1='''
             kirim.addEventListener("click",()=>{
                 var nama = document.getElementById("nama").value 
                 var pendapat = document.getElementById("pendapat").value 
+                const uniqueKey = Date.now();
                 if(nama && pendapat){
-                set(ref(db,"diskusi/"+nama),{
+                set(ref(db,"diskusi/"+uniqueKey),{
                     nama:nama,
                     pendapat:pendapat
                 })
