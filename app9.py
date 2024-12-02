@@ -45,7 +45,7 @@ st.title("Aplikasi Satistik")
 
 halaman = st.sidebar.selectbox("Uji 1 sampel",["Streamlit","Gradio","Google Colab"])
 
-tab1, tab2 = st.tabs(["Uji 1 Sampel","Uji 2 Sampel dependen"])
+tab1, tab2 = st.tabs(["Uji 1 Sampel","Uji 2 Sampel dependen","Uji 2 Sampel Independen"])
 
 with tab1:
     if halaman=="Streamlit":
