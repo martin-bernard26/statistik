@@ -660,7 +660,319 @@ plt.show()
             plt.ylabel("Nilai")
             st.pyplot(plt)
             
-                
+with tab3:
+    st.markdown('''
+    <style>
+        #judul_u2i{
+            border:2px solid black;
+            border-radius:10px;
+            font-size:20px;
+            padding:5px;
+            background-color:green;
+            color:yellow;
+            font-weignt:bold;
+            margin-right:300px;
+            text-align:center;
+            font-family:elephant;
+        }
+        #pengertian_u2i{
+            position:absolute;
+            left:-5px;
+            top:-2px;
+            font-family:"brush script mt";
+            background-color:red;
+            color:white;
+            width:100px;
+            padding:5px;
+            margin-top:10px;
+            border-radius:10px;
+            border:2px solid black;
+            transform:rotate(-5deg);
+            text-align:center;
+        }
+        #parag_u2i{
+            position:realtive;
+            border:2px solid black;
+            background-color:orange;
+            margin-top:30px;
+            font-family:"comic sans ms";
+            text-align:justify;
+            padding:10px;
+        }
+        .bagian1{
+            font-family:arial;
+            font-size:25px;
+            font-weight:bold;
+        }
+        .bagian2{
+            font-family:"comic sans ms";
+            font-size:20px;
+        }
+        .lingkup{
+            margin-top:10px;
+            padding:5px;
+            border:2px solid vlack;
+            background-color:pink;
+            border-radius:10px;
+            box-shadow:2px 2px 2px gray;
+        }
+        .lingkup:hover{
+            background-color:yellow;
+            box-shadow:-2px 2px -2px gray;
+        }
+        .lingkup1{
+            margin-top:10px;
+            padding:5px;
+            border:2px solid vlack;
+            background-color:blue;
+            border-radius:10px;
+            box-shadow:2px 2px 2px gray;
+            color:yellow;
+        }
+    </style>
+    ''',unsafe_allow_html=True)
+    st.markdown('''
+    <div id="judul_u2i">Uji 2 Sampel Independen</div>
+    ''',unsafe_allow_html=True)
+    st.markdown('''
+    <div id="pengertian_u2i">Pengertian</div>
+    <div id="parag_u2i">Uji dua sampel independen digunakan untuk membandingkan
+    rata-rata atau median dari dua kelompok yang tidak saling terkait (misalnya,
+    kelompok kontrol vs. kelompok perlakuan). Berikut langkah-langkahnya:</div>
+    ''',unsafe_allow_html=True)
+    st.markdown('''
+    <div class="lingkup">
+    <div class="bagian1">Langkah 1: Formulasi Hipotesis<div>
+    <ol>
+        <li class="bagian2">Hipotesis Nol (H₀): Tidak ada perbedaan rata-rata/median antara dua kelompok.</li>
+        <li class="bagian2">Hipotesis Alternatif (H₁): Ada perbedaan rata-rata/median antara dua kelompok.</li>
+    </ol>
+    </div>
+    ''',unsafe_allow_html=True)
+    st.markdown('''
+    <div class="lingkup">
+    <div class="bagian1">Langkah 2: Tentukan Metode Uji<div>
+    <div class="bagian2">Metode yang sering digunakan untuk uji dua sampel independen:</div>
+    <ol>
+        <li class="bagian2">Uji t dua sampel (Two-sample t-test):</li>
+        <ul type="circle">
+            <li class="bagian2">Digunakan jika data berdistribusi normal.</li>
+        </ul>
+        <li class="bagian2">Uji Mann-Whitney U (Non-parametrik):</li>
+        <ul type="circle">
+            <li class="bagian2">Digunakan jika data tidak berdistribusi normal.</li>
+        </ul>
+    </ol>
+    </div>
+    ''',unsafe_allow_html=True)
+    st.markdown('''
+    <div class="lingkup">
+    <div class="bagian1">Langkah 3: Persiapkan Data<div>
+    <div class="bagian2">Data harus terdiri dari dua kelompok independen:</div>
+    <ol>
+        <li class="bagian2">Kelompok 1: Data dari kelompok pertama (misalnya, kontrol).</li>
+        <li class="bagian2">Kelompok 2: Data dari kelompok kedua (misalnya, perlakuan).</li>
+    </ol>
+    </div>
+    ''',unsafe_allow_html=True)
+    st.markdown('''
+    <div class="lingkup">
+    <div class="bagian1">Langkah 4: Analisis Data<div>
+    <div class="bagian2">A. Uji Normalitas</div>
+    <ul>
+        <li class="bagian2">Periksa apakah data dalam setiap kelompok berdistribusi normal. Ini
+        menentukan apakah Anda menggunakan uji parametrik atau non-parametrik.
+        Python (Shapiro-Wilk):</li>
+    </ul>
+    </div>
+    ''',unsafe_allow_html=True)
+    with st.container(border=True):
+        st.code('''
+        from scipy.stats import shapiro
+
+# Data
+kontrol = [85, 78, 88]
+perlakuan = [90, 80, 85]
+
+# Uji normalitas pada kedua kelompok
+stat_kontrol, p_kontrol = shapiro(kontrol)
+stat_perlakuan, p_perlakuan = shapiro(perlakuan)
+
+print("p-value kontrol:", p_kontrol)
+print("p-value perlakuan:", p_perlakuan)
+
+if p_kontrol < 0.05 or p_perlakuan < 0.05:
+    print("Salah satu kelompok tidak normal (gunakan Mann-Whitney U)")
+else:
+    print("Kedua kelompok normal (gunakan Two-sample t-test)")
+
+    ''')
+    st.markdown('''
+    <div class="lingkup">
+    <div class="bagian2">B. Uji Kesamaan Varians (Levene Test)</div>
+    <ul>
+        <li class="bagian2">Sebelum melakukan uji t dua sampel, periksa apakah varians
+        kedua kelompok sama. Gunakan uji Levene untuk memeriksanya.
+        Python (Levene Test):</li>
+    </ul>
+    </div>
+    ''',unsafe_allow_html=True)
+    with st.container(border=True):
+        st.code('''
+        from scipy.stats import levene
+
+stat, p = levene(kontrol, perlakuan)
+print("p-value Levene:", p)
+
+if p < 0.05:
+    print("Varians tidak sama (gunakan t-test dengan equal_var=False)")
+else:
+    print("Varians sama (gunakan t-test dengan equal_var=True)")
+
+
+    ''')
+    st.markdown('''
+    <div class="lingkup">
+    <div class="bagian2">C. Uji t Dua Sampel (Jika Data Normal)</div>
+    <ul>
+        <li class="bagian2">Gunakan uji t dua sampel untuk membandingkan rata-rata.
+            Python (Two-sample t-test):</li>
+    </ul>
+    </div>
+    ''',unsafe_allow_html=True)
+    with st.container(border=True):
+        st.code('''
+        from scipy.stats import ttest_ind
+
+# Uji t dua sampel
+stat, p = ttest_ind(kontrol, perlakuan, equal_var=True)  # Ganti equal_var=False jika varians tidak sama
+print("Statistik t:", stat)
+print("p-value:", p)
+
+if p < 0.05:
+    print("H0 ditolak: Ada perbedaan signifikan")
+else:
+    print("H0 diterima: Tidak ada perbedaan signifikan")
+    ''')
+    st.markdown('''
+    <div class="lingkup">
+    <div class="bagian2">D. Uji Mann-Whitney U (Jika Data Tidak Normal)</div>
+    <ul>
+        <li class="bagian2">Gunakan uji Mann-Whitney U untuk membandingkan median dua kelompok.
+        Python (Mann-Whitney U):</li>
+    </ul>
+    </div>
+    ''',unsafe_allow_html=True)
+    with st.container(border=True):
+        st.code('''
+        from scipy.stats import mannwhitneyu
+
+# Uji Mann-Whitney U
+stat, p = mannwhitneyu(kontrol, perlakuan)
+print("Statistik Mann-Whitney U:", stat)
+print("p-value:", p)
+
+if p < 0.05:
+    print("H0 ditolak: Ada perbedaan signifikan")
+else:
+    print("H0 diterima: Tidak ada perbedaan signifikan")
+    ''')
+    st.markdown('''
+    <div class="lingkup">
+    <div class="bagian1">Langkah 5: Interpretasi Hasil<div>
+    <ol>
+        <li class="bagian2">p-value < 0.05: Tolak H₀, ada perbedaan signifikan antara dua kelompok.</li>
+        <li class="bagian2">p-value ≥ 0.05: Terima H₀, tidak ada perbedaan signifikan antara dua kelompok.</li>
+    </ol>
+    <div>
+    ''',unsafe_allow_html=True)
+    st.markdown('''
+    <div class="lingkup">
+    <div class="bagian1">Langkah 6: Visualisasi (Opsional)</div>
+    
+    </div>
+    ''',unsafe_allow_html=True)
+    with st.container(border=True):
+        st.code('''
+        import matplotlib.pyplot as plt
+
+# Data
+data = [kontrol, perlakuan]
+labels = ["Kontrol", "Perlakuan"]
+
+plt.boxplot(data, labels=labels)
+plt.title("Distribusi Nilai")
+plt.ylabel("Nilai")
+plt.show()
+
+    ''')
+    st.markdown('''
+    <div class="lingkup">
+    <div class="bagian1">Sebelum mengupload data lihat contoh di bawah ini</div>
+    <img style="background-color:orange;padding:2px;" src="https://res.cloudinary.com/ikip-siliwangi/image/upload/v1733283132/data_2_sampel_bgrffc.png"></img>
+    <div>catatan Penting</div>
+    <ol>
+        <li>Data terformat di excel seperti gambar di atas</li>
+        <li>Untuk label header (nama kunci) bisa dituliskan tergantung dari pengguna</li>
+    </ol>
+    </div>
+    ''',unsafe_allow_html=True)
+    data = st.file_uploader("Masukan file excel di sini (.xlsx)")
+    if data:
+        df = pd.read_excel(data)
+        st.dataframe(df)
+        st.markdown('''
+    <div class="lingkup">
+    <div class="bagian1">Statistik Deskriptif<div>
+    ''',unsafe_allow_html=True)
+        st.table(df.describe())
+        st.markdown('''
+    <div class="lingkup">
+    <div class="bagian1">Uji Normal<div>
+    ''',unsafe_allow_html=True)
+        st.markdown('''
+    <div class="lingkup1">
+    <div class="bagian1" style="font-size:16px">Shapiro Wilks<div>
+    ''',unsafe_allow_html=True)
+        st.write(df.keys()[1])
+        st.table(sc.shapiro(df[df.keys()[1]].dropna()))
+        st.write(df.keys()[2])
+        st.table(sc.shapiro(df[df.keys()[2]].dropna()))
+        st.markdown('''
+    <div class="lingkup1">
+    <div class="bagian1" style="font-size:16px">Kolmogorov-Smirnov<div>
+    ''',unsafe_allow_html=True)
+        st.write(df.keys()[1])
+        st.table(sc.kstest(df[df.keys()[1]].dropna(), 'norm', args=(np.mean(df[df.keys()[1]].dropna()), np.std(df[df.keys()[1]].dropna(), ddof=1))))
+        st.write(df.keys()[2])
+        st.table(sc.kstest(df[df.keys()[2]].dropna(), 'norm', args=(np.mean(df[df.keys()[2]].dropna()), np.std(df[df.keys()[2]].dropna(), ddof=1))))
+        st.markdown('''
+    <div class="lingkup">
+    <div class="bagian1">Uji Homogenitas<div>
+    ''',unsafe_allow_html=True)
+        st.table(sc.levene(df[df.keys()[1]].dropna(),df[df.keys()[2]].dropna()))
+        st.markdown('''
+    <div class="lingkup">
+    <div class="bagian1">Uji Rata-rata<div>
+    ''',unsafe_allow_html=True)
+        st.markdown('''
+    <div class="lingkup1">
+    <div class="bagian1" style="font-size:16px">Uji t 2 Sampel Independen (data normal dan homogen)<div>
+    ''',unsafe_allow_html=True)
+        ujit1 = sc.ttest_ind(df[df.keys()[1]].dropna(), df[df.keys()[2]].dropna(), equal_var=True)
+        st.table(ujit1)
+        st.markdown('''
+    <div class="lingkup1">
+    <div class="bagian1" style="font-size:16px">Uji t' 2 Sampel Independen (data normal dan tidak homogen)<div>
+    ''',unsafe_allow_html=True)
+        ujit2 = sc.ttest_ind(df[df.keys()[1]].dropna(), df[df.keys()[2]].dropna(), equal_var=False)
+        st.table(ujit2)
+        st.markdown('''
+    <div class="lingkup1">
+    <div class="bagian1" style="font-size:16px">Uji Mannwhitney U (data tidak normal)<div>
+    ''',unsafe_allow_html=True)
+        ujiu = sc.mannwhitneyu(df[df.keys()[1]].dropna(), df[df.keys()[2]].dropna())
+        st.table(ujiu)                
 tuliskan_ke_html='''
 <!DOCTYPE html>
 <html lang="en">
